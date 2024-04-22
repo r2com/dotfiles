@@ -1,6 +1,5 @@
-
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
 vim.opt.timeoutlen = 0
 vim.opt.tabstop = 2

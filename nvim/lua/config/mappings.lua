@@ -56,13 +56,13 @@ wk.register({
 			end,
 			"Config Files",
 		},
-		-- e = { "<cmd>Neotree toggle reveal<cr>", "File Explorer" },
-		--     e = {
-		--       function()
-		--         require("oil").toggle_float()
-		--       end,
-		--       "File Explorer",
-		--     },
+		--	e = { "<cmd>Neotree toggle reveal<cr>", "File Explorer" },
+		e = {
+			function()
+				require("oil").toggle_float()
+			end,
+			"File Explorer",
+		},
 		f = {
 			name = "Find/File",
 			H = { "<cmd>FzfLua files cwd=~<cr>", "Find Files (home)" },
@@ -129,14 +129,14 @@ wk.register({
 		--        end,
 		--        "Session Stop",
 		--      },
-		t = {
-			name = "Tab",
-			o = { "<cmd>tabnew<CR>", "Open New Tab" },
-			x = { "<leader>tx", "<cmd>tabclose<CR>" },
-			n = { "<leader>tn", "<cmd>tabn<CR>" },
-			p = { "<leader>tp", "<cmd>tabp<CR>" },
-			f = { "<leader>tf", "<cmd>tabnew %<CR>" },
-		},
+		--t = {
+		--	name = "Tab",
+		--	o = { "<cmd>tabnew<CR>", "Open new tab" },
+		--	x = { "<cmd>tabclose<cr>", "Close current tab" },
+		--	n = { "<cmd>tabNext<cr>", "Go to next tab" },
+		--	p = { "<cmd>tabprevious<cr>", "Go to previou tab" },
+		--	f = { "<leader>tf", "<cmd>tabnew %<CR>" },
+		--},
 		--      q = { "<cmd>qa<cr>", "Quit all" },
 		--    },
 		[" "] = { "<cmd>FzfLua files<cr>", "Find Files" },

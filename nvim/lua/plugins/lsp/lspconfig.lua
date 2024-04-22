@@ -10,6 +10,20 @@ return {
 		-- import lspconfig plugin
 		local lspconfig = require("lspconfig")
 
+		lspconfig.vhdl_ls.setup({
+			-- Server-specific settings. See `:help lspconfig-setup`
+			settings = {
+				["vhdl_ls"] = {},
+			},
+		})
+
+		lspconfig.zls.setup({
+			-- Server-specific settings. See `:help lspconfig-setup`
+			settings = {
+				["zls"] = {},
+			},
+		})
+
 		-- import mason_lspconfig plugin
 		local mason_lspconfig = require("mason-lspconfig")
 
@@ -32,8 +46,8 @@ return {
 				--       opts.desc = "Go to declaration"
 				--       keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
 				--
-				--       opts.desc = "Show LSP definitions"
-				--       keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
+				opts.desc = "Show LSP definitions"
+				keymap.set("n", "gd", "<cmd>FzfLua lsp_definitions<CR>", opts) -- show lsp definitions
 				--
 				--       opts.desc = "Show LSP implementations"
 				--       keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts) -- show lsp implementations
@@ -85,21 +99,22 @@ return {
 					capabilities = capabilities,
 				})
 			end,
-			["zls"] = function()
-				-- configure Zig server
-				lspconfig["zls"].setup({
-					capabilities = capabilities,
-					on_attach = function(client, bufnr)
-						vim.api.nvim_create_autocmd("BufWritePost", {
-							pattern = { "*.zig" },
-							callback = function(ctx)
-								-- Here use ctx.match instead of ctx.file
-								-- client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
-							end,
-						})
-					end,
-				})
-			end,
+			--
+			--		["zls"] = function()
+			--			-- configure Zig server
+			--			lspconfig["zls"].setup({
+			--				capabilities = capabilities,
+			--				on_attach = function(client, bufnr)
+			--					vim.api.nvim_create_autocmd("BufWritePost", {
+			--						pattern = { "*.zig" },
+			--						callback = function(ctx)
+			--							-- Here use ctx.match instead of ctx.file
+			--							-- client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
+			--						end,
+			--					})
+			--				end,
+			--			})
+			--		end,
 			["verible"] = function()
 				-- configure Zig server
 				lspconfig["verible"].setup({
