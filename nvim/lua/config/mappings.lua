@@ -1,37 +1,40 @@
-local M = {}
-
-local function map(mode, l, r, desc, buffer)
-	vim.keymap.set(mode, l, r, { buffer = buffer or true, desc = desc })
-end
-
-function M.lsp_attach(buffer)
-	local lsp = vim.lsp.buf
-	local fzf = function(func)
-		return string.format("<cmd>FzfLua %s jump_to_single_result=true<cr>", func)
-	end
-	local pfx = "LSP: "
-	local function bmap(mode, l, r, desc)
-		map(mode, l, r, desc, buffer)
-	end
-
-	bmap("n", "<leader>ca", lsp.code_action, pfx .. "Code Action")
-	bmap("n", "<leader>cd", fzf("lsp_workspace_diagnostics"), pfx .. "Diagnostics")
-	bmap("n", "<leader>cr", lsp.rename, pfx .. "Rename")
-	bmap("n", "<leader>cs", fzf("lsp_document_symbols"), pfx .. "Document Symbols")
-	bmap("n", "gd", fzf("lsp_definitions"), pfx .. "Goto Definition")
-	bmap("n", "gr", fzf("lsp_references"), pfx .. "Goto References")
-	bmap("n", "gD", lsp.declaration, pfx .. "Goto Declaration")
-	bmap("n", "gI", fzf("lsp_implementations"), pfx .. "Goto Implementations")
-	bmap("n", "gy", fzf("lsp_typedefs"), pfx .. "Goto Type Definition")
-	bmap("n", "K", lsp.hover, pfx .. "Hover Documentation")
-	bmap("n", "gK", lsp.signature_help, pfx .. "Signature Help")
-	bmap("i", "<C-k>", lsp.signature_help, pfx .. "Signature Help")
-end
+--local M = {}
+--
+--local function map(mode, l, r, desc, buffer)
+--	vim.keymap.set(mode, l, r, { buffer = buffer or true, desc = desc })
+--end
+--
+--function M.lsp_attach(buffer)
+--	local lsp = vim.lsp.buf
+--	local fzf = function(func)
+--		return string.format("<cmd>FzfLua %s jump_to_single_result=true<cr>", func)
+--	end
+--	local pfx = "LSP: "
+--	local function bmap(mode, l, r, desc)
+--		map(mode, l, r, desc, buffer)
+--	end
+--
+--	bmap("n", "<leader>ca", lsp.code_action, pfx .. "Code Action")
+--	bmap("n", "<leader>cd", fzf("lsp_workspace_diagnostics"), pfx .. "Diagnostics")
+--	bmap("n", "<leader>cr", lsp.rename, pfx .. "Rename")
+--	bmap("n", "<leader>cs", fzf("lsp_document_symbols"), pfx .. "Document Symbols")
+--	bmap("n", "gd", fzf("lsp_definitions"), pfx .. "Goto Definition")
+--	bmap("n", "gr", fzf("lsp_references"), pfx .. "Goto References")
+--	bmap("n", "gD", lsp.declaration, pfx .. "Goto Declaration")
+--	bmap("n", "gI", fzf("lsp_implementations"), pfx .. "Goto Implementations")
+--	bmap("n", "gy", fzf("lsp_typedefs"), pfx .. "Goto Type Definition")
+--	bmap("n", "K", lsp.hover, pfx .. "Hover Documentation")
+--	bmap("n", "gK", lsp.signature_help, pfx .. "Signature Help")
+--	bmap("i", "<C-k>", lsp.signature_help, pfx .. "Signature Help")
+--end
 
 local wk = require("which-key")
 wk.register({
 	["<leader>"] = {
+		-- Alternate buffer
 		a = { "<cmd>e #<cr>", "Alternate Buffer" },
+
+		-- Buffer
 		b = {
 			name = "Buffer",
 			a = { "<cmd>e #<cr>", "Previous Buffer" },
@@ -50,13 +53,14 @@ wk.register({
 		--      "Format",
 		--    },
 		--  },
+		--  -- Config files
 		C = {
 			function()
 				require("fzf-lua").files({ cwd = vim.fn.stdpath("config") })
 			end,
 			"Config Files",
 		},
-		--	e = { "<cmd>Neotree toggle reveal<cr>", "File Explorer" },
+
 		e = {
 			function()
 				require("oil").toggle_float()
@@ -84,7 +88,7 @@ wk.register({
 			s = { "<cmd>FzfLua git_status<cr>", "Status" },
 			t = { "<cmd>FzfLua tags<cr>", "Tags" },
 		},
-		--		l = { "<cmd>Lazy<cr>", "Lazy" },
+
 		s = {
 			name = "Search",
 			b = { "<cmd>FzfLua cur_buf<cr>", "Grep Current Buffer" },
@@ -102,89 +106,41 @@ wk.register({
 		--     b = { "<cmd>FzfLua tmux_buffers<cr>", "Tmux Paste Buffers" },
 		--     f = { "<cmd>TmuxFilePaths<cr>", "Tmux File Paths" },
 		--   },
-		--  u = {
-		--    name = "UI",
-		--    c = { "<cmd>ColorizerToggle<cr>", "Toggle RGB Colors" },
-		--    h = { "<cmd>FzfLua highlights<cr>", "Highlights" },
-		--    t = { "<cmd>TSContextToggle<cr>", "Toggle Treesitter Context" },
-		--    f = { "<cmd>ToggleFormat<cr>", "Toggle Format On Save" },
-		--  },
-		--    q = {
-		--      name = "Quit",
-		--      l = {
-		--        function()
-		--          require("persistence").load({ last = true })
-		--        end,
-		--        "Restore Last Session",
-		--      },
-		--      r = {
-		--        function()
-		--          require("persistence").load()
-		--        end,
-		--        "Restore Session",
-		--      },
-		--      s = {
-		--        function()
-		--          require("persistence").stop()
-		--        end,
-		--        "Session Stop",
-		--      },
-		--t = {
-		--	name = "Tab",
-		--	o = { "<cmd>tabnew<CR>", "Open new tab" },
-		--	x = { "<cmd>tabclose<cr>", "Close current tab" },
-		--	n = { "<cmd>tabNext<cr>", "Go to next tab" },
-		--	p = { "<cmd>tabprevious<cr>", "Go to previou tab" },
-		--	f = { "<leader>tf", "<cmd>tabnew %<CR>" },
-		--},
-		--      q = { "<cmd>qa<cr>", "Quit all" },
-		--    },
+
 		[" "] = { "<cmd>FzfLua files<cr>", "Find Files" },
 		["/"] = {
 			{ "<cmd>FzfLua live_grep<cr>", "Grep" },
 			{ "<cmd>FzfLua grep_visual<cr>", "Grep", mode = "v" },
 		},
 		["\\"] = { "<cmd>vsplit | terminal<cr>", "Terminal" },
-		["|"] = { "<cmd>vsplit<cr>", "Vertical Split" },
-		["-"] = { "<cmd>split<cr>", "Horizontal Split" },
 		['"'] = { "<cmd>FzfLua registers<cr>", "Registers" },
 	},
-	--  ["[d"] = { "<cmd>lua vim.diagnostic.goto_prev()<cr>", "Prev Diagnostic" },
-	--  ["[e"] = { "<cmd>lua vim.diagnostic.goto_prev({ severity = 'ERROR' })<cr>", "Prev Diagnostic" },
-	--  ["]d"] = { "<cmd>lua vim.diagnostic.goto_next()<cr>", "Next Diagnostic" },
-	--  ["]e"] = { "<cmd>lua vim.diagnostic.goto_next({ severity = 'ERROR' })<cr>", "Next Diagnostic" },
-	-- Center on half page jump
-	["<C-d>"] = { "<C-d>zz", "Half page down" },
-	["<C-u>"] = { "<C-u>zz", "Half page up" },
+
 	-- Move to tmux window using the <ctrl> hjkl keys
 	--  ["<C-h>"] = { mode = { "n", "i", "x", "t" }, "<cmd>SmartCursorMoveLeft<cr>", "Go to left window" },
 	--  ["<C-j>"] = { mode = { "n", "i", "x", "t" }, "<cmd>SmartCursorMoveDown<cr>", "Go to lower window" },
 	--  ["<C-k>"] = { mode = { "n", "i", "x", "t" }, "<cmd>SmartCursorMoveUp<cr>", "Go to upper window" },
 	--  ["<C-l>"] = { mode = { "n", "i", "x", "t" }, "<cmd>SmartCursorMoveRight<cr>", "Go to right window" },
+
+	-------------------------------------------------------------------------------
 	-- Buffers
+	-------------------------------------------------------------------------------
 	H = { "<cmd>bprev<cr>", "Previous Buffer" },
 	L = { "<cmd>bnext<cr>", "Next Buffer" },
 	["<C-b>"] = { "<cmd>FzfLua buffers<cr>", "Find Buffers" },
-	-- Quick save
-	["<C-s>"] = { mode = { "n", "i", "x", "s" }, "<cmd>w<cr><esc>", "Save file" },
-	-- Indent lines
-	[">"] = { mode = { "v" }, ">gv", "Indent" },
-	["<"] = { mode = { "v" }, "<gv", "De-dent" },
+
+	-------------------------------------------------------------------------------
+	-- Escape
+	-------------------------------------------------------------------------------
 	["<esc>"] = {
 		{ mode = { "n", "i" }, "<cmd>noh<cr><esc>", "Clear Search Highlighting" },
 		{ mode = { "t" }, "<C-\\><C-n>", "Escape terminal mode" },
 	},
-	-- Insert mode help
-	["<C-e>"] = { mode = "i", "<esc>A", "Insert end of line" },
 })
 
--- Better Up/Down, keeps selection when moving lines in visual mode
-wk.register({
-	j = { "v:count == 0 ? 'gj' : 'j'", "Down" },
-	k = { "v:count == 0 ? 'gk' : 'k'", "Up" },
-}, { mode = { "n", "x" }, expr = true, silent = true })
-
+-------------------------------------------------------------------------------
 -- Moving lines
+-------------------------------------------------------------------------------
 wk.register({
 	["<A-j>"] = { "<cmd>m .+1<cr>==", "Move Line down" },
 	["<A-k>"] = { "<cmd>m .-2<cr>==", "Move Line up" },
@@ -198,4 +154,4 @@ wk.register({
 	["<A-k>"] = { "<cmd>m '<-2<cr>gv=gv", "Move Lines Up" },
 }, { mode = "v" })
 
-return M
+--return M

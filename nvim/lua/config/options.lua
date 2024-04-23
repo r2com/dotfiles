@@ -13,3 +13,4 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.textwidth = 80
 vim.opt.confirm = true
+vim.g.loaded_ruby_provider = 0
