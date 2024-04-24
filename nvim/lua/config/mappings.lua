@@ -1,59 +1,22 @@
---local M = {}
---
---local function map(mode, l, r, desc, buffer)
---	vim.keymap.set(mode, l, r, { buffer = buffer or true, desc = desc })
---end
---
---function M.lsp_attach(buffer)
---	local lsp = vim.lsp.buf
---	local fzf = function(func)
---		return string.format("<cmd>FzfLua %s jump_to_single_result=true<cr>", func)
---	end
---	local pfx = "LSP: "
---	local function bmap(mode, l, r, desc)
---		map(mode, l, r, desc, buffer)
---	end
---
---	bmap("n", "<leader>ca", lsp.code_action, pfx .. "Code Action")
---	bmap("n", "<leader>cd", fzf("lsp_workspace_diagnostics"), pfx .. "Diagnostics")
---	bmap("n", "<leader>cr", lsp.rename, pfx .. "Rename")
---	bmap("n", "<leader>cs", fzf("lsp_document_symbols"), pfx .. "Document Symbols")
---	bmap("n", "gd", fzf("lsp_definitions"), pfx .. "Goto Definition")
---	bmap("n", "gr", fzf("lsp_references"), pfx .. "Goto References")
---	bmap("n", "gD", lsp.declaration, pfx .. "Goto Declaration")
---	bmap("n", "gI", fzf("lsp_implementations"), pfx .. "Goto Implementations")
---	bmap("n", "gy", fzf("lsp_typedefs"), pfx .. "Goto Type Definition")
---	bmap("n", "K", lsp.hover, pfx .. "Hover Documentation")
---	bmap("n", "gK", lsp.signature_help, pfx .. "Signature Help")
---	bmap("i", "<C-k>", lsp.signature_help, pfx .. "Signature Help")
---end
-
 local wk = require("which-key")
 wk.register({
 	["<leader>"] = {
-		-- Alternate buffer
-		a = { "<cmd>e #<cr>", "Alternate Buffer" },
 
 		-- Buffer
 		b = {
 			name = "Buffer",
-			a = { "<cmd>e #<cr>", "Previous Buffer" },
-			c = { "<cmd>%bd|e#|bd#<cr><cr>", "Close All Others" },
-			d = { "<cmd>bp|bdel #<cr>", "Close" },
+			o = { "<cmd>%bd|e#|bd#<cr><cr>", "Close All Others" },
+			c = { "<cmd>bp|bdel #<cr>", "Close" },
 			A = { "<cmd>%bdel<cr>", "Close All" },
-			D = { "<cmd>bdel!<cr>", "Force Close" },
+			F = { "<cmd>bdel!<cr>", "Force Close" },
 		},
-		--  c = {
-		--    name = "Code",
-		--    l = { "<cmd>LspInfo<cr>", "LSP Info" },
-		--    f = {
-		--      function()
-		--        require("conform").format()
-		--      end,
-		--      "Format",
-		--    },
-		--  },
-		--  -- Config files
+
+		-- code
+		c = {
+			name = "Code",
+			i = { "<cmd>LspInfo<cr>", "LSP Info" },
+		},
+		-- Config files
 		C = {
 			function()
 				require("fzf-lua").files({ cwd = vim.fn.stdpath("config") })
@@ -82,16 +45,19 @@ wk.register({
 			name = "Git",
 			b = { "<cmd>FzfLua git_branches<cr>", "Branches" },
 			c = { "<cmd>FzfLua git_commits<cr>", "Commits" },
-			C = { "<cmd>FzfLua changes<cr>", "Changes" },
-			g = { "<cmd>Neogit kind=auto<cr>", "Neogit" },
-			h = { "Hunks" },
 			s = { "<cmd>FzfLua git_status<cr>", "Status" },
-			t = { "<cmd>FzfLua tags<cr>", "Tags" },
+			g = { "<cmd>Neogit kind=auto<cr>", "Neogit" },
+		},
+
+		w = {
+			name = "Window",
+			m = { "<cmd>MaximizerToggle<CR>", "Maximize/Minimize a split" },
+			l = { "<cmd>SessionRestore<CR>", "Load session for current Dir" },
+			s = { "<cmd>SessionSave<CR>", "Save session for current Dir" },
 		},
 
 		s = {
 			name = "Search",
-			b = { "<cmd>FzfLua cur_buf<cr>", "Grep Current Buffer" },
 			c = { "<cmd>FzfLua commands<cr>", "Commands" },
 			g = { "<cmd>FzfLua live_grep<cr>", "Grep" },
 			h = { "<cmd>FzfLua help_tags<cr>", "Help Tags" },
@@ -153,5 +119,3 @@ wk.register({
 	["<A-j>"] = { "<cmd>m '>+1<cr>gv=gv", "Move Lines Down" },
 	["<A-k>"] = { "<cmd>m '<-2<cr>gv=gv", "Move Lines Up" },
 }, { mode = "v" })
-
---return M

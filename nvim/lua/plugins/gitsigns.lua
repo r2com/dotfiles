@@ -43,5 +43,7 @@ return {
 				col = 1,
 			},
 		})
+		vim.keymap.set("n", "<leader>gp", ":Gitsigns preview_hunk<cr>", { desc = "Preview Hunk" })
+		vim.keymap.set("n", "<leader>gB", ":Gitsigns toggle_current_line_blame<cr>", { desc = "Toggle blame" })
 	end,
 }

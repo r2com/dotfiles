@@ -11,6 +11,6 @@ vim.opt.undolevels = 10000
 vim.opt.smartindent = true
 vim.opt.number = true
 vim.opt.relativenumber = true
-vim.opt.textwidth = 80
+vim.opt.textwidth = 160
 vim.opt.confirm = true
 vim.g.loaded_ruby_provider = 0
