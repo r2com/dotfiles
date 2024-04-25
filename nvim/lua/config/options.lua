@@ -14,3 +14,4 @@ vim.opt.relativenumber = true
 vim.opt.textwidth = 160
 vim.opt.confirm = true
 vim.g.loaded_ruby_provider = 0
+vim.o.scrolloff = 20
